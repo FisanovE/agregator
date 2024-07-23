@@ -9,17 +9,13 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Weather {
-/*    @JsonProperty("id")
+
+    @JsonProperty("id")
     private Integer id;
 
     @JsonProperty("main")
     private String currentState;
 
     @JsonProperty("description")
-    private String description;*/
-
-    private int id;
-    private String main;
     private String description;
-    private String icon;
 }

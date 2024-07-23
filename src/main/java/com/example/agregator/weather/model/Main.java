@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Main {
-   /* @JsonProperty("temp")
+
+    @JsonProperty("temp")
     private Double temperature;
 
     @JsonProperty("feels_like")
@@ -29,16 +30,5 @@ public class Main {
     private Integer pressureAtGroundLevel;
 
     @JsonProperty("humidity")
-    private Integer humidity;*/
-
-    private double temp;
-    private double feels_like;
-    private double temp_min;
-    private double temp_max;
-    private int pressure;
-    private int sea_level;
-    private int grnd_level;
-    private int humidity;
-    private double temp_kf;
-
+    private Integer humidity;
 }

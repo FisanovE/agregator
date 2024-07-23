@@ -12,7 +12,7 @@ import java.time.ZoneId;
 public class TimestampDeserializer extends JsonDeserializer<LocalDateTime> {
 
     @Override
-    public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, IOException {
+    public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         long timestampInSeconds = jsonParser.getValueAsLong();
 
         return LocalDateTime.ofInstant(

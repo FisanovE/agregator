@@ -7,8 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Sys {
-    /*@JsonProperty("pod")
-    private String pod;*/
-
-    private String pod;
+    @JsonProperty("pod")
+    private String partOfDay;
 }

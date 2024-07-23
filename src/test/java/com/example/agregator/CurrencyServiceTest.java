@@ -47,8 +47,6 @@ class CurrencyServiceTest {
         data.addCurrencyRate(currency, rateValue);
 
         CurrencyResponse expectedResponse = new CurrencyResponse();
-        expectedResponse.setStatus(status);
-        expectedResponse.setMessage(message);
         expectedResponse.setRates(data);
 
         String mockResponseBody = objectMapper.writeValueAsString(expectedResponse);
@@ -60,8 +58,6 @@ class CurrencyServiceTest {
 
         CurrencyResponse response = currencyService.getCurrencyRate(currency);
 
-        assertEquals(status, response.getStatus());
-        assertEquals(message, response.getMessage());
         assertEquals(rateValue, response.getRates().getCurrencyRates().get(currency));
 
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
@@ -74,9 +70,7 @@ class CurrencyServiceTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
                 .thenThrow(new RuntimeException("Network error"));
 
-        RequestException exception = assertThrows(RequestException.class, () -> {
-            currencyService.getCurrencyRate(currency);
-        });
+        RequestException exception = assertThrows(RequestException.class, () -> currencyService.getCurrencyRate(currency));
 
         assertEquals("Error getting value for currency: " + currency, exception.getMessage());
     }

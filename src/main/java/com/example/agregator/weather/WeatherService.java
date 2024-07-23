@@ -1,6 +1,5 @@
 package com.example.agregator.weather;
 
-import com.example.agregator.currency.CurrencyResponse;
 import com.example.agregator.exceptions.RequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

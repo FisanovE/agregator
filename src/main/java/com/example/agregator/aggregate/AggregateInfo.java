@@ -1,7 +1,6 @@
 package com.example.agregator.aggregate;
 
 
-import com.example.agregator.weather.DayWeather;
 import com.example.agregator.weather.model.WeatherData;
 import lombok.Getter;
 import lombok.Setter;

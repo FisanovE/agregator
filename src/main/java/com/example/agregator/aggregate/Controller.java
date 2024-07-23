@@ -18,7 +18,6 @@ public class Controller {
                                              @RequestParam(required = false) String q,
                                              @RequestParam(required = false) Double lat,
                                              @RequestParam(required = false) Double lon) {
-        AggregateInfo aggregateInfo = aggregateService.getAggregateInfo(currency, q, lat, lon);
-        return aggregateInfo;
+        return aggregateService.getAggregateInfo(currency, q, lat, lon);
     }
 }

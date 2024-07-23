@@ -8,16 +8,12 @@ import lombok.Setter;
 @Setter
 public class Wind {
 
-   /* @JsonProperty("speed")
+    @JsonProperty("speed")
     private Double speed;
 
     @JsonProperty("deg")
     private Integer directionOfDegrees;
 
     @JsonProperty("gust")
-    private Double gust;*/
-
-    private double speed;
-    private int deg;
-    private double gust;
+    private Double gust;
 }

@@ -11,13 +11,31 @@ import java.util.List;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherData {
-    private long dt;
+
+    @JsonProperty("dt")
+    private long forecastTime;
+
+    @JsonProperty("main")
     private Main main;
-    private List<Weather> weather;
+
+    @JsonProperty("weather")
+    private List<Weather> weathers;
+
+    @JsonProperty("clouds")
     private Clouds clouds;
+
+    @JsonProperty("wind")
     private Wind wind;
+
+    @JsonProperty("visibility")
     private int visibility;
-    private double pop;
-    private Sys sys;
-    private String dt_txt;
+
+    @JsonProperty("pop")
+    private double probabilityOfPrecipitation;
+
+    @JsonProperty("sys")
+    private Sys partOfDay;
+
+    @JsonProperty("dt_txt")
+    private String forecastTime_txt;
 }

@@ -18,13 +18,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherResponse {
 
-    /*@JsonProperty("list")
-    private List<DayWeather> weathers;*/
+    @JsonProperty("list")
+    private List<WeatherData> forecasts;
 
-    private String cod;
-    private int message;
-    private int cnt;
-    private List<WeatherData> list;
+    @JsonProperty("city")
     private City city;
 
 }

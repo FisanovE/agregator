@@ -34,13 +34,12 @@ public class AggregateService {
 
         if (city != null) {
             weatherResponse = weatherService.getDailyWeatherByCity(city);
-            System.out.println(weatherResponse);
         } else {
             weatherResponse = weatherService.getDailyWeatherByCoordinates(latitude, longitude);
         }
 
         aggregateInfo.setCurrencyRates(currencyResponse.getRates().getCurrencyRates());
-        aggregateInfo.setWeathers(weatherResponse.getList());
+        aggregateInfo.setWeathers(weatherResponse.getForecasts());
 
         return aggregateInfo;
     }
