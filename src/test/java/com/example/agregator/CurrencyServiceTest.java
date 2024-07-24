@@ -14,8 +14,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -36,10 +35,8 @@ class CurrencyServiceTest {
 
 
     @Test
-    public void shouldCurrencyResponseReturned_whenStringCurrencyValid() throws Exception {
+    public void shouldCurrencyResponseReturned_whenParamCurrencyValid() throws Exception {
 
-        int status = 200;
-        String message = "ok";
         String currency = "USDRUB";
         String rateValue = "64.1824";
 
@@ -56,15 +53,14 @@ class CurrencyServiceTest {
         when(mockHttpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class))).thenReturn(mockResponse);
         when(mockObjectMapper.readValue(mockResponseBody, CurrencyResponse.class)).thenReturn(expectedResponse);
 
-        CurrencyResponse response = currencyService.getCurrencyRate(currency);
+        CurrencyResponse actualResponse = currencyService.getCurrencyRate(currency);
 
-        assertEquals(rateValue, response.getRates().getCurrencyRates().get(currency));
-
+        assertEquals(rateValue, actualResponse.getRates().getCurrencyRates().get(currency));
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    public void shouldCurrencyExceptionReturned_whenStringCurrencyNotValid() throws Exception {
+    public void shouldRequestExceptionReturned_whenParamCurrencyNotValid() throws Exception {
         String currency = "USD";
 
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))

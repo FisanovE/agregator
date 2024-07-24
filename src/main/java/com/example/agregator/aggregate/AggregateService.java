@@ -16,7 +16,7 @@ public class AggregateService {
     private final CurrencyService currencyService;
     private final WeatherService weatherService;
 
-    public AggregateInfo getAggregateInfo(String currency, String city, Double latitude, Double longitude) {
+    public AggregateInfo getAggregateInfo(String currency, String cityName, Double latitude, Double longitude) {
 
         AggregateInfo aggregateInfo = new AggregateInfo();
         CurrencyResponse currencyResponse;
@@ -26,14 +26,14 @@ public class AggregateService {
             throw new ValidationException("Currency parameter must not be null");
         }
 
-        if (city == null && latitude == null && longitude == null) {
+        if (cityName == null && latitude == null && longitude == null) {
             throw new ValidationException("All geocoding parameters must not be null");
         }
 
         currencyResponse = currencyService.getCurrencyRate(currency);
 
-        if (city != null) {
-            weatherResponse = weatherService.getDailyWeatherByCity(city);
+        if (cityName != null) {
+            weatherResponse = weatherService.getDailyWeatherByCity(cityName);
         } else {
             weatherResponse = weatherService.getDailyWeatherByCoordinates(latitude, longitude);
         }

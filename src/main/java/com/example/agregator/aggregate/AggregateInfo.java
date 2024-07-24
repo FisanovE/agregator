@@ -1,8 +1,10 @@
 package com.example.agregator.aggregate;
 
 
-import com.example.agregator.weather.model.WeatherData;
+import com.example.agregator.weather.model.Forecast;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -10,7 +12,9 @@ import java.util.Map;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AggregateInfo {
     private Map<String, String> currencyRates;
-    private List<WeatherData> weathers;
+    private List<Forecast> weathers;
 }

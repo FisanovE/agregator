@@ -40,16 +40,16 @@ public class WeatherService {
         }
     }
 
-    public WeatherResponse getDailyWeatherByCity(String city) {
+    public WeatherResponse getDailyWeatherByCity(String cityName) {
         try {
-            URI uri = URI.create(BASE_API_URL + FORECAST_API_URL_SUFFIX + "?units=metric&q=" + city + "&appid=" + WEATHER_TOKEN);
+            URI uri = URI.create(BASE_API_URL + FORECAST_API_URL_SUFFIX + "?units=metric&q=" + cityName + "&appid=" + WEATHER_TOKEN);
             HttpRequest request = buildRequest(uri);
             log.info("{}", request);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("{}", response.body());
             return objectMapper.readValue(response.body(), WeatherResponse.class);
         } catch (Exception e) {
-            throw new RequestException("Error getting weather for city: " + city);
+            throw new RequestException("Error getting weather for city: " + cityName);
         }
     }
 

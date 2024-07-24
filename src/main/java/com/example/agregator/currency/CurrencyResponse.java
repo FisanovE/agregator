@@ -3,19 +3,17 @@ package com.example.agregator.currency;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class CurrencyResponse {
 
     @JsonProperty("data")
@@ -23,8 +21,9 @@ public class CurrencyResponse {
 
     @Getter
     @Setter
-    @NoArgsConstructor
     @ToString
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Data {
 
         private Map<String, String> currencyRates = new HashMap<>();
