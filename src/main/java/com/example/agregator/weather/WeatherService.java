@@ -10,8 +10,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static com.example.agregator.common.Constants.WEATHER_TOKEN;
+import static com.example.agregator.utils.Constants.WEATHER_TOKEN;
 
+/**
+ * Сервис погоды, обрабатывает и возвращает информацию, полученную с веб-сервиса погоды.
+ */
 @Slf4j
 @Service
 public class WeatherService {
@@ -26,27 +29,38 @@ public class WeatherService {
         this.objectMapper = objectMapper;
     }
 
-    public WeatherResponse getDailyWeatherByCoordinates(Double latitude, Double longitude) {
+    /**
+     * Возвращает информацию, полученную с сервиса погоды - прогноз погоды на 5 дней по переданным координатам.
+     *
+     * @param latitude - координата широты
+     * @param longitude - координата долготы
+     * @return объект WeatherResponse с информацией о прогнозе погоды
+     * @throws RequestException если сервис погоды не ответит на запрос.
+     */
+    public WeatherResponse getForecastByCoordinates(Double latitude, Double longitude) {
         try {
             URI uri = URI.create(BASE_API_URL + FORECAST_API_URL_SUFFIX + "?units=metric&lat=" + latitude + "&lon=" +
                     longitude + "&appid=" + WEATHER_TOKEN);
             HttpRequest request = buildRequest(uri);
-            log.info("{}", request);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            log.info("{}", response.body());
             return objectMapper.readValue(response.body(), WeatherResponse.class);
         } catch (Exception e) {
             throw new RequestException("Error getting weather for coordinates: " + latitude + "  " + longitude);
         }
     }
 
-    public WeatherResponse getDailyWeatherByCity(String cityName) {
+    /**
+     * Возвращает информацию, полученную с сервиса погоды - прогноз погоды на 5 дней по переданному названию города.
+     *
+     * @param cityName - название города
+     * @return объект WeatherResponse с информацией о прогнозе погоды
+     * @throws RequestException если сервис погоды не ответит на запрос.
+     */
+    public WeatherResponse getForecastByCity(String cityName) {
         try {
             URI uri = URI.create(BASE_API_URL + FORECAST_API_URL_SUFFIX + "?units=metric&q=" + cityName + "&appid=" + WEATHER_TOKEN);
             HttpRequest request = buildRequest(uri);
-            log.info("{}", request);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            log.info("{}", response.body());
             return objectMapper.readValue(response.body(), WeatherResponse.class);
         } catch (Exception e) {
             throw new RequestException("Error getting weather for city: " + cityName);

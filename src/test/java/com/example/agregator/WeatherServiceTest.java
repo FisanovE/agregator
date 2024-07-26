@@ -49,7 +49,7 @@ class WeatherServiceTest {
     Clouds clouds = new Clouds(100);
     Wind wind = new Wind(2.16, 26, 3.49);
     Sys partOfDay = new Sys("n");
-    Forecast forecast = new Forecast(1721757600L, main, List.of(weather), clouds, wind, 10000, 0.0, partOfDay, "2024-07-23 18:00:00");
+    Forecast forecast = new Forecast("1721757600", main, List.of(weather), clouds, wind, 10000, 0.0, partOfDay, "2024-07-23 18:00:00");
     WeatherResponse expectedResponse = new WeatherResponse(List.of(forecast), city);
 
 
@@ -62,7 +62,7 @@ class WeatherServiceTest {
         when(mockHttpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class))).thenReturn(mockResponse);
         when(mockObjectMapper.readValue(mockResponseBody, WeatherResponse.class)).thenReturn(expectedResponse);
 
-        WeatherResponse actualResponse = weatherService.getDailyWeatherByCoordinates(latitude, longitude);
+        WeatherResponse actualResponse = weatherService.getForecastByCoordinates(latitude, longitude);
 
         assertEquals(actualResponse.getCity(), city);
         assertEquals(actualResponse.getForecasts().size(), 1);
@@ -79,7 +79,7 @@ class WeatherServiceTest {
         when(mockHttpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class))).thenReturn(mockResponse);
         when(mockObjectMapper.readValue(mockResponseBody, WeatherResponse.class)).thenReturn(expectedResponse);
 
-        WeatherResponse actualResponse = weatherService.getDailyWeatherByCity(cityName);
+        WeatherResponse actualResponse = weatherService.getForecastByCity(cityName);
 
         assertEquals(actualResponse.getCity(), city);
         assertEquals(actualResponse.getForecasts().size(), 1);
@@ -94,7 +94,7 @@ class WeatherServiceTest {
                 .thenThrow(new RuntimeException("Network error"));
 
         RequestException exception = assertThrows(RequestException.class,
-                () -> weatherService.getDailyWeatherByCoordinates(latitude, longitude));
+                () -> weatherService.getForecastByCoordinates(latitude, longitude));
 
         assertEquals("Error getting weather for coordinates: " + latitude + "  " + longitude, exception.getMessage());
     }
@@ -106,7 +106,7 @@ class WeatherServiceTest {
                 .thenThrow(new RuntimeException("Network error"));
 
         RequestException exception = assertThrows(RequestException.class,
-                () -> weatherService.getDailyWeatherByCity(cityName));
+                () -> weatherService.getForecastByCity(cityName));
 
         assertEquals("Error getting weather for city: " + cityName, exception.getMessage());
     }

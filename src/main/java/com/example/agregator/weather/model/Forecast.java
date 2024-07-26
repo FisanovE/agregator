@@ -1,7 +1,9 @@
 package com.example.agregator.weather.model;
 
+import com.example.agregator.utils.TimeAsStringDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,8 @@ import java.util.List;
 public class Forecast {
 
     @JsonProperty("dt")
-    private Long forecastTime;
+    @JsonDeserialize(using = TimeAsStringDeserializer.class)
+    private String forecastTime;
 
     @JsonProperty("main")
     private Main main;
