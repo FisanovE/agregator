@@ -44,5 +44,5 @@ public class Forecast {
     private Sys partOfDay;
 
     @JsonProperty("dt_txt")
-    private String forecastTime_txt;
+    private String forecastTimeAsText;
 }

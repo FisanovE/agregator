@@ -76,7 +76,7 @@ class AggregateServiceTest {
         assertEquals(actualAggregateInfo.getWeathers().get(0).getWind(), wind);
         assertEquals(actualAggregateInfo.getWeathers().get(0).getVisibility(), visibility);
         assertEquals(actualAggregateInfo.getWeathers().get(0).getProbabilityOfPrecipitation(), probabilityOfPrecipitation);
-        assertEquals(actualAggregateInfo.getWeathers().get(0).getForecastTime_txt(), forecastTime);
+        assertEquals(actualAggregateInfo.getWeathers().get(0).getForecastTimeAsText(), forecastTime);
     }
 
     @Test
@@ -97,7 +97,7 @@ class AggregateServiceTest {
         assertEquals(actualAggregateInfo.getWeathers().get(0).getWind(), wind);
         assertEquals(actualAggregateInfo.getWeathers().get(0).getVisibility(), visibility);
         assertEquals(actualAggregateInfo.getWeathers().get(0).getProbabilityOfPrecipitation(), probabilityOfPrecipitation);
-        assertEquals(actualAggregateInfo.getWeathers().get(0).getForecastTime_txt(), forecastTime);
+        assertEquals(actualAggregateInfo.getWeathers().get(0).getForecastTimeAsText(), forecastTime);
     }
 
     @Test
@@ -118,7 +118,7 @@ class AggregateServiceTest {
         assertEquals(actualAggregateInfo.getWeathers().get(0).getWind(), wind);
         assertEquals(actualAggregateInfo.getWeathers().get(0).getVisibility(), visibility);
         assertEquals(actualAggregateInfo.getWeathers().get(0).getProbabilityOfPrecipitation(), probabilityOfPrecipitation);
-        assertEquals(actualAggregateInfo.getWeathers().get(0).getForecastTime_txt(), forecastTime);
+        assertEquals(actualAggregateInfo.getWeathers().get(0).getForecastTimeAsText(), forecastTime);
     }
 
     @Test
