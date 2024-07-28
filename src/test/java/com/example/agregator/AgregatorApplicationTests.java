@@ -22,6 +22,20 @@ class AgregatorApplicationTests {
         uri = "http://localhost:" + port;
     }
 
+    @Test
+    public void shouldCode200AndResponseReturned_whenParamCityAndCoordinatesValid() {
+        given().
+                pathParam("currency1", "USDRUB").
+                pathParam("currency2", "EURRUB").
+                pathParam("city", "Magnitogorsk").
+                pathParam("lat", "59.0472").
+                pathParam("lon", "53.4186").
+                when().
+                get(uri + "/aggregate?currency={currency1}&currency={currency2}&city={city}&lat={lat}&lon={lon}").
+                then().
+                statusCode(200).
+                body(matchesJsonSchemaInClasspath("schema.json"));
+    }
 
     @Test
     public void shouldCode200AndResponseReturned_whenParamCityValid() {
@@ -30,7 +44,7 @@ class AgregatorApplicationTests {
                 pathParam("currency2", "EURRUB").
                 pathParam("city", "Magnitogorsk").
                 when().
-                get(uri + "/aggregate?currency={currency1}&currency={currency2}&q={city}").
+                get(uri + "/aggregate?currency={currency1}&currency={currency2}&city={city}").
                 then().
                 statusCode(200).
                 body(matchesJsonSchemaInClasspath("schema.json"));
@@ -43,7 +57,7 @@ class AgregatorApplicationTests {
                 pathParam("currency2", "EURRUB").
                 pathParam("city", "").
                 when().
-                get(uri + "/aggregate?currency={currency1}&currency={currency2}&q={city}").
+                get(uri + "/aggregate?currency={currency1}&currency={currency2}&city={city}").
                 then().
                 assertThat().
                 statusCode(400);
@@ -64,7 +78,7 @@ class AgregatorApplicationTests {
     }
 
     @Test
-    public void shouldCode500AndErrorReturned_whenParamCoordinatesNotValid() {
+    public void shouldCode400AndErrorReturned_whenParamCoordinatesNotValid() {
         given().
                 pathParam("currency1", "USDRUB").
                 pathParam("currency2", "EURRUB").
@@ -76,5 +90,49 @@ class AgregatorApplicationTests {
                 statusCode(400).
                 log().
                 all();
+    }
+
+    @Test
+    public void shouldCode500AndErrorReturned_whenParamLatitudeIsNegative() {
+        given().
+                pathParam("currency1", "USDRUB").
+                pathParam("currency2", "EURRUB").
+                pathParam("lat", "-59.0472").
+                pathParam("lon", "53.4186").
+                when().
+                get(uri + "/aggregate?currency={currency1}&currency={currency2}&lat={lat}&lon={lon}").
+                then().
+                statusCode(500).
+                log().
+                all();
+    }
+
+    @Test
+    public void shouldCode500AndErrorReturned_whenParamLongitudeIsNegative() {
+        given().
+                pathParam("currency1", "USDRUB").
+                pathParam("currency2", "EURRUB").
+                pathParam("lat", "59.0472").
+                pathParam("lon", "-53.4186").
+                when().
+                get(uri + "/aggregate?currency={currency1}&currency={currency2}&lat={lat}&lon={lon}").
+                then().
+                statusCode(500).
+                log().
+                all();
+    }
+
+    @Test
+    public void shouldCode200AndResponseReturned_whenParamCoordinatesHasValueZero() {
+        given().
+                pathParam("currency1", "USDRUB").
+                pathParam("currency2", "EURRUB").
+                pathParam("lat", "0").
+                pathParam("lon", "0").
+                when().
+                get(uri + "/aggregate?currency={currency1}&currency={currency2}&lat={lat}&lon={lon}").
+                then().
+                statusCode(200).
+                body(matchesJsonSchemaInClasspath("schema.json"));
     }
 }
