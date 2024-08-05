@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AggregateInfo {
-    private Map<String, String> currencyRates;
+//    private Map<String, String> currencyRates;
+    private Object currencyRates;
     private List<Forecast> weathers;
 }

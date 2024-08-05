@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="FATAL" monitorInterval="5">
+    <Properties>
+        <Property name="pattern">version %date{ISO8601} %logger{1.}.%method(): %mask{%message} %exception%n</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingRandomAccessFile name="File" fileName="agregator.log"
+                                 filePattern="agregator.log.%d{MM-dd-yyyy}" ignoreExceptions="false">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.example.agregator.aggregate.AggregateService" level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

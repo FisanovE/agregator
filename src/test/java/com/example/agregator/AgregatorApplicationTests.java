@@ -21,7 +21,6 @@ class AgregatorApplicationTests {
     public void init() {
         uri = "http://localhost:" + port;
     }
-
     @Test
     public void shouldCode200AndResponseReturned_whenParamCityAndCoordinatesValid() {
         given().
@@ -51,7 +50,7 @@ class AgregatorApplicationTests {
     }
 
     @Test
-    public void shouldCode500AndErrorReturned_whenParamCityNotValid() {
+    public void shouldCode400AndErrorReturned_whenParamCityNotValid() {
         given().
                 pathParam("currency1", "USDRUB").
                 pathParam("currency2", "EURRUB").
@@ -93,7 +92,7 @@ class AgregatorApplicationTests {
     }
 
     @Test
-    public void shouldCode500AndErrorReturned_whenParamLatitudeIsNegative() {
+    public void shouldCode400AndErrorReturned_whenParamLatitudeIsNegative() {
         given().
                 pathParam("currency1", "USDRUB").
                 pathParam("currency2", "EURRUB").
@@ -102,13 +101,13 @@ class AgregatorApplicationTests {
                 when().
                 get(uri + "/aggregate?currency={currency1}&currency={currency2}&lat={lat}&lon={lon}").
                 then().
-                statusCode(500).
+                statusCode(400).
                 log().
                 all();
     }
 
     @Test
-    public void shouldCode500AndErrorReturned_whenParamLongitudeIsNegative() {
+    public void shouldCode400AndErrorReturned_whenParamLongitudeIsNegative() {
         given().
                 pathParam("currency1", "USDRUB").
                 pathParam("currency2", "EURRUB").
@@ -117,7 +116,7 @@ class AgregatorApplicationTests {
                 when().
                 get(uri + "/aggregate?currency={currency1}&currency={currency2}&lat={lat}&lon={lon}").
                 then().
-                statusCode(500).
+                statusCode(400).
                 log().
                 all();
     }

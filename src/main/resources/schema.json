@@ -115,7 +115,9 @@
               "gust"
             ]
           },
-          "visibility": {},
+          "visibility": {
+            "type": "number"
+          },
           "pop": {
             "type": "number"
           },

@@ -55,7 +55,7 @@ public class AggregateService {
             weatherResponse = weatherService.getForecastByCoordinates(latitude, longitude);
         }
 
-        aggregateInfo.setCurrencyRates(currencyResponse.getRates().getCurrencyRates());
+        aggregateInfo.setCurrencyRates(currencyResponse.getData());
         aggregateInfo.setWeathers(weatherResponse.getForecasts());
 
         return aggregateInfo;

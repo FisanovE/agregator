@@ -1,5 +1,6 @@
 package com.example.agregator;
 
+import com.example.agregator.configurations.ApiKeys;
 import com.example.agregator.exceptions.RequestException;
 import com.example.agregator.weather.WeatherResponse;
 import com.example.agregator.weather.WeatherService;
@@ -31,6 +32,9 @@ class WeatherServiceTest {
 
     @Mock
     private ObjectMapper mockObjectMapper;
+
+    @Mock
+    private ApiKeys mockApiKeys;
 
     @InjectMocks
     private WeatherService weatherService;
@@ -96,7 +100,7 @@ class WeatherServiceTest {
         RequestException exception = assertThrows(RequestException.class,
                 () -> weatherService.getForecastByCoordinates(latitude, longitude));
 
-        assertEquals("Error getting weather for coordinates: " + latitude + "  " + longitude, exception.getMessage());
+        assertEquals("Network error", exception.getMessage());
     }
 
     @Test
@@ -108,6 +112,6 @@ class WeatherServiceTest {
         RequestException exception = assertThrows(RequestException.class,
                 () -> weatherService.getForecastByCity(cityName));
 
-        assertEquals("Error getting weather for city: " + cityName, exception.getMessage());
+        assertEquals("Network error", exception.getMessage());
     }
 }

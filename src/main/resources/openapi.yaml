@@ -1,0 +1,196 @@
+openapi: "3.0.2"
+info:
+  title: "Aggregator"
+  description: "Сервис, который возвращает данные о курсе указанных валют с сайта currate.ru и погоде с сайта openweathermap.org в течение следующих 5 дней, с шагом в 3 часа. Данные доступны в формате JSON. <br> <br> **Примечание**: Параметры геокодирования не являются обязательными, но необходимо выбрать хотя бы один параметр: название города или координаты местности. <br> Вызов API по названию города (с использованием параметра 'city') даст наиболее точные результаты определения местоположения. <br> При наличии в параметрах одновременно названия города и координат местности, прогноз погоды выдаётся по названию города. <br> Параметр 'currency' является обязательным и может принимать сразу несколько валютных пар, разделенных запятой."
+  version: "1.0"
+  termsOfService: "https://github.com/FisanovE/agregator"
+  contact:
+    name: Aggregator
+    url: "https://github.com/FisanovE/agregator"
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /aggregate:
+    get:
+      tags:
+        - controller
+      summary: Метод получения агрегированной информации.
+      description: Получение агрегированной информации.
+      operationId: getAggregateInfo
+      parameters:
+        - name: currency
+          in: query
+          required: true
+          schema:
+            type: string
+          example: USDRUB,EURRUB
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+          example: Magnitogorsk
+        - name: lat
+          in: query
+          required: false
+          schema:
+            minimum: 0
+            type: number
+            format: double
+          example: 53.4242184
+        - name: lon
+          in: query
+          required: false
+          schema:
+            minimum: 0
+            type: number
+            format: double
+          example: 58.983136
+      responses:
+        '200':
+          description: Успешный ответ с объектом AggregateInfo, содержащим агрегированную информацию
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/AggregateInfo'
+        '400':
+          description: Ответ с описанием ошибки при некорректном запросе к серверу
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Ответ с описанием ошибки при обработке запроса на сервере
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Error getting value for currency: USD1ST,RUBUSD"
+        stackTrace:
+          type: string
+          example: "com.example.agregator.exceptions.RequestException: Error getting value for currency: USD1ST,RUBUSD\r\n\tat com.example.agregator..."
+    AggregateInfo:
+      type: object
+      properties:
+        currencyRates:
+          type: object
+          additionalProperties:
+            type: string
+            example: "64.1824"
+        weathers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Forecast'
+    Clouds:
+      type: object
+      properties:
+        all:
+          type: integer
+          format: int32
+          example: 75
+    Forecast:
+      type: object
+      properties:
+        dt:
+          type: string
+          example: 2024-07-28 17:00:00
+        main:
+          $ref: '#/components/schemas/Main'
+        weather:
+          type: array
+          items:
+            $ref: '#/components/schemas/Weather'
+        clouds:
+          $ref: '#/components/schemas/Clouds'
+        wind:
+          $ref: '#/components/schemas/Wind'
+        visibility:
+          type: integer
+          format: int32
+          example: 10000
+        pop:
+          type: number
+          format: double
+          example: 1.0
+        sys:
+          $ref: '#/components/schemas/Sys'
+        dt_txt:
+          type: string
+          example: 2024-07-28 12:00:00
+    Main:
+      type: object
+      properties:
+        temp:
+          type: number
+          format: double
+          example: 17.43
+        feels_like:
+          type: number
+          format: double
+          example: 16.93
+        temp_min:
+          type: number
+          format: double
+          example: 15.81
+        temp_max:
+          type: number
+          format: double
+          example: 17.43
+        pressure:
+          type: integer
+          format: int32
+          example: 1005
+        sea_level:
+          type: integer
+          format: int32
+          example: 1005
+        grnd_level:
+          type: integer
+          format: int32
+          example: 960
+        humidity:
+          type: integer
+          format: int32
+          example: 65
+    Sys:
+      type: object
+      properties:
+        pod:
+          type: string
+          example: d
+    Weather:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 500
+        main:
+          type: string
+          example: Дождь
+        description:
+          type: string
+          example: слабый дождь
+    Wind:
+      type: object
+      properties:
+        speed:
+          type: number
+          format: double
+          example: 6.23
+        deg:
+          type: integer
+          format: int32
+          example: 281
+        gust:
+          type: number
+          format: double
+          example: 10.61

@@ -1,11 +1,9 @@
 package com.example.agregator.currency;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -16,21 +14,30 @@ import java.util.Map;
 @AllArgsConstructor
 public class CurrencyResponse {
 
+    @JsonProperty("status")
+    private Integer status;
+
+    @JsonProperty("message")
+    private String message;
+
     @JsonProperty("data")
-    private Data rates;
+    private Object data;
 
-    @Getter
-    @Setter
-    @ToString
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Data {
+    public boolean isDataArray() {
+        return data instanceof Iterable;
+    }
 
-        private Map<String, String> currencyRates = new HashMap<>();
+    public boolean isDataMap() {
+        return data instanceof Map;
+    }
 
-        @JsonAnySetter
-        public void addCurrencyRate(String key, String value) {
-            currencyRates.put(key, value);
+
+    public Map<String, String> getRates() {
+        if (isDataMap()) {
+            return (Map<String, String>) data;
+        } else {
+            return null;
         }
     }
+
 }

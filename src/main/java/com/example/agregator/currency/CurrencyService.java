@@ -1,7 +1,10 @@
 package com.example.agregator.currency;
 
+import com.example.agregator.configurations.ApiKeys;
 import com.example.agregator.exceptions.RequestException;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +13,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static com.example.agregator.utils.Constants.CURRENCY_TOKEN;
-
 /**
  * Сервис валюты, обрабатывает и возвращает информацию, полученную с веб-сервиса валюты.
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class CurrencyService {
+
+    private final ApiKeys apiKeys;
     private final HttpClient client;
     private final ObjectMapper objectMapper;
-
-    CurrencyService(HttpClient httpClient, ObjectMapper objectMapper) {
-        this.client = httpClient;
-        this.objectMapper = objectMapper;
-    }
 
     /**
      * Возвращает информацию, полученную с сервиса валюты.
@@ -35,13 +34,20 @@ public class CurrencyService {
      */
     public CurrencyResponse getCurrencyRate(String currency) {
         try {
-            URI uri = URI.create("https://currate.ru/api/?get=rates&pairs=" + currency + "&key=" + CURRENCY_TOKEN);
+            URI uri = URI.create("https://currate.ru/api/?get=rates&pairs=" + currency + "&key=" + apiKeys.getCurrencyToken());
             HttpRequest request = buildRequest(uri);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return objectMapper.readValue(response.body(), CurrencyResponse.class);
-
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+            CurrencyResponse currencyResponse = objectMapper.readValue(response.body(), CurrencyResponse.class);
+            if (currencyResponse.getStatus() == 500) {
+                throw new RequestException("Invalid 'currency' parameter format: " + currency);
+            }
+            if (currencyResponse.getStatus() == 403) {
+                throw new RequestException("Invalid currency api-key");
+            }
+            return currencyResponse;
         } catch (Exception e) {
-            throw new RequestException("Error getting value for currency: " + currency);
+            throw new RequestException(e.getMessage());
         }
     }
 

@@ -1,0 +1,607 @@
+{
+	"info": {
+		"_postman_id": "e78752f4-cc3a-45c2-92ae-a941a9383522",
+		"name": "Aggregator",
+		"description": "Сервис, который возвращает данные о курсе указанных валют с сайта currate.ru и погоде с сайта openweathermap.org в течение следующих 5 дней, с шагом в 3 часа. Данные доступны в формате JSON. <br/> <br/> **Примечание**: Параметры геокодирования не являются обязательными, но необходимо выбрать хотя бы один параметр: название города или координаты местности. Вызов API по названию города (с использованием параметра 'city') даст наиболее точные результаты определения местоположения. При наличии в параметрах одновременно названия города и координат местности, прогноз погоды выдаётся по названию города.\n\nContact Support:\n Name: Aggregator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29015023"
+	},
+	"item": [
+		{
+			"name": "aggregate",
+			"item": [
+				{
+					"name": "Получение информации по городу",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'currencyRates' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('currencyRates');\r",
+									"    pm.expect(jsonData.currencyRates).to.have.property('USDRUB');\r",
+									"    pm.expect(jsonData.currencyRates).to.have.property('EURRUB');\r",
+									"});\r",
+									"pm.test(\"Test response 'weathers' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('weathers');\r",
+									"    pm.expect(jsonData.weathers.length, 'List length must be 40').to.eql(40);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&city=Magnitogorsk",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB",
+									"description": "(Required) "
+								},
+								{
+									"key": "city",
+									"value": "Magnitogorsk"
+								}
+							]
+						},
+						"description": "Получение агрегированной информации."
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по координатам",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'currencyRates' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('currencyRates');\r",
+									"    pm.expect(jsonData.currencyRates).to.have.property('USDRUB');\r",
+									"    pm.expect(jsonData.currencyRates).to.have.property('EURRUB');\r",
+									"});\r",
+									"pm.test(\"Test response 'weathers' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('weathers');\r",
+									"    pm.expect(jsonData.weathers.length, 'List length must be 40').to.eql(40);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&lat=53.4242184&lon=58.983136",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB"
+								},
+								{
+									"key": "lat",
+									"value": "53.4242184"
+								},
+								{
+									"key": "lon",
+									"value": "58.983136"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации при параметрах \"lat\" и \"lon\" равным \"0\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'currencyRates' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('currencyRates');\r",
+									"    pm.expect(jsonData.currencyRates).to.have.property('USDRUB');\r",
+									"    pm.expect(jsonData.currencyRates).to.have.property('EURRUB');\r",
+									"});\r",
+									"pm.test(\"Test response 'weathers' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('weathers');\r",
+									"    pm.expect(jsonData.weathers.length, 'List length must be 40').to.eql(40);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&lat=0&lon=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB"
+								},
+								{
+									"key": "lat",
+									"value": "0"
+								},
+								{
+									"key": "lon",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка при пустом параметре \"currency\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'error' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('error');\r",
+									"    pm.expect(jsonData.error, 'Error field value does not match').to.eql(\"Invalid 'currency' parameter format: \");\r",
+									"});\r",
+									"pm.test(\"Test response 'stackTrace' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('stackTrace');\r",
+									"    pm.expect(jsonData.error).to.be.a('string').and.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=&city=Magnitogorsk",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": ""
+								},
+								{
+									"key": "city",
+									"value": "Magnitogorsk"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка при неверном параметре \"currency\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([500]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'error' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('error');\r",
+									"    pm.expect(jsonData.error, 'Error field value does not match').to.eql(\"Invalid 'currency' parameter format: USD1ST\");\r",
+									"});\r",
+									"pm.test(\"Test response 'stackTrace' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('stackTrace');\r",
+									"    pm.expect(jsonData.error).to.be.a('string').and.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USD1ST&city=Magnitogorsk",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USD1ST"
+								},
+								{
+									"key": "city",
+									"value": "Magnitogorsk"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка при пустом параметре \"city\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'error' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('error');\r",
+									"    pm.expect(jsonData.error, 'Error field value does not match').to.eql(\"City Name parameter must not be empty\");\r",
+									"});\r",
+									"pm.test(\"Test response 'stackTrace' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('stackTrace');\r",
+									"    pm.expect(jsonData.error).to.be.a('string').and.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&city=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB"
+								},
+								{
+									"key": "city",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка при пустом параметре \"lat\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'error' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('error');\r",
+									"    pm.expect(jsonData.error, 'Error field value does not match').to.eql(\"All geocoding parameters must not be null at the same time\");\r",
+									"});\r",
+									"pm.test(\"Test response 'stackTrace' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('stackTrace');\r",
+									"    pm.expect(jsonData.error).to.be.a('string').and.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&lat=&lon=58.983136",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB"
+								},
+								{
+									"key": "lat",
+									"value": ""
+								},
+								{
+									"key": "lon",
+									"value": "58.983136"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка при пустом параметре \"lon\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'error' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('error');\r",
+									"    pm.expect(jsonData.error, 'Error field value does not match').to.eql(\"All geocoding parameters must not be null at the same time\");\r",
+									"});\r",
+									"pm.test(\"Test response 'stackTrace' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('stackTrace');\r",
+									"    pm.expect(jsonData.error).to.be.a('string').and.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&lat=53.4242184&lon=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB"
+								},
+								{
+									"key": "lat",
+									"value": "53.4242184"
+								},
+								{
+									"key": "lon",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка при отрицательном параметре \"lat\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'error' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('error');\r",
+									"    pm.expect(jsonData.error, 'Error field value does not match').to.eql(\"getAggregateInfo.latitude: должно быть больше или равно 0\");\r",
+									"});\r",
+									"pm.test(\"Test response 'stackTrace' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('stackTrace');\r",
+									"    pm.expect(jsonData.error).to.be.a('string').and.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&lat=-53.4242184&lon=58.983136",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB"
+								},
+								{
+									"key": "lat",
+									"value": "-53.4242184"
+								},
+								{
+									"key": "lon",
+									"value": "58.983136"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка при отрицательном параметре \"lon\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+									"});\r",
+									"pm.test(\"Has a response to the request\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test response 'error' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('error');\r",
+									"    pm.expect(jsonData.error, 'Error field value does not match').to.eql(\"getAggregateInfo.longitude: должно быть больше или равно 0\");\r",
+									"});\r",
+									"pm.test(\"Test response 'stackTrace' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('stackTrace');\r",
+									"    pm.expect(jsonData.error).to.be.a('string').and.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/aggregate?currency=USDRUB,EURRUB&lat=53.4242184&lon=-58.983136",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aggregate"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USDRUB,EURRUB"
+								},
+								{
+									"key": "lat",
+									"value": "53.4242184"
+								},
+								{
+									"key": "lon",
+									"value": "-58.983136"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}
